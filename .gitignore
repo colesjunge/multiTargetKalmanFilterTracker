@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.claude/
+*.egg-info/
+.pytest_cache/
+figures/
+data/
+.DS_Store
+
+# advisor/config docs, not part of the pushed project
+CLAUDE.md
+defense_tracking_projects.md

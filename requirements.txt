@@ -1,0 +1,24 @@
+# Project 1: Multi-Target Kalman Filter Tracker
+# Python 3.11+ recommended (the type-hint syntax in the spec skeletons needs 3.10+)
+
+# --- Core numerics ---
+numpy>=1.26
+scipy>=1.11            # linalg.solve, stats.chi2, optimize.linear_sum_assignment
+
+# --- Visualization ---
+matplotlib>=3.8        # static plots + animation.FuncAnimation
+
+# --- Config ---
+pyyaml>=6.0            # configs/default.yaml
+
+# --- Testing ---
+pytest>=8.0
+
+# --- Optional: reference implementation for validating your own KF ---
+# Write your filter first, then compare against filterpy's on identical inputs.
+# Note: filterpy is old and lightly maintained; if it conflicts with numpy 2.x,
+# either pin numpy<2 in a separate venv just for the comparison test, or skip it.
+# filterpy>=1.4.5
+
+# --- Optional: code quality ---
+# ruff>=0.4            # linting + formatting, fast, zero-config
