@@ -11,3 +11,6 @@ data/
 # advisor/config docs, not part of the pushed project
 CLAUDE.md
 defense_tracking_projects.md
+
+# README.md will be added at end; currently a mess of notes and results
+README.md
