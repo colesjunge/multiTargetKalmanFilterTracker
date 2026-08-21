@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import linalg
 
 
 def position_rmse(estimates: np.ndarray, truth: np.ndarray) -> float:
@@ -23,3 +24,42 @@ def position_rmse(estimates: np.ndarray, truth: np.ndarray) -> float:
     rmse = np.sqrt(mean_squared_distance)
 
     return float(rmse)
+
+def nees(x_est: np.ndarray, P: np.ndarray, x_true: np.ndarray) -> float:
+    """Calculate the Normalized Estimation Error Squared (NEES).
+    In: x_est shape (n,), P shape (n, n), x_true shape (n,)
+    Out: scalar
+    """
+
+    if x_est.shape != x_true.shape:
+        raise ValueError("Estimated state and true state must have the same shape.")
+
+    if P.shape[0] != P.shape[1] or P.shape[0] != x_est.shape[0]:
+        raise ValueError("Covariance matrix P must be square and match the dimension of the state.")
+
+    # Calculate the estimation error
+    error = x_est - x_true
+
+    # Calculate NEES
+    y = linalg.solve(P, error)
+    nees_value = error @ y
+
+    return float(nees_value)
+
+
+def average_nees(snapshots: list[tuple[np.ndarray, np.ndarray]], truths: list[np.ndarray]) -> float:
+    """
+    Calculate the mean NEES over entire run
+    In: snapshots; list of (x_est, P) tuples, one entry per (run, timestep) pair across the entire Monte Carlo simulation
+        truths; list of x_true vectors, same length as snapshots, each (n,)
+    Out: mean NEES over every entry; scalar
+    """
+    avg_nees = 0
+
+    for i in range(len(snapshots)):
+        avg_nees += nees(snapshots[i][0], snapshots[i][1], truths[i])
+
+    return float(avg_nees / len(snapshots))
+
+
+

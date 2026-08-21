@@ -7,8 +7,7 @@ from tracking.sim.trajectories import constant_velocity_trajectory
 def test_converges_to_truth_with_exact_measurements():
     """
     Check CV filter w/ zero noise
-    Goal is position error -> ~0
-    Goal is P's trace shrinks and stabilizes over a straight-line trajectory.
+    Goal is position error -> ~0 and P's trace shrinks and stabilizes over a straight-line trajectory.
     """
 
     dt = 0.1
