@@ -73,6 +73,8 @@ def test_nees_averages_to_state_dim_for_consistent_filter():
     avg_nees = average_nees(all_snapshots, all_truths)
 
     assert abs(avg_nees - 4) < 1, "Average NEES to far from 4 (dim_x)"
+
+# To run: pytest tests/test_metrics.py -v
             
 
 

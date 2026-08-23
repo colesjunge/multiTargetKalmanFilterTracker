@@ -43,4 +43,4 @@ def test_converges_to_truth_with_exact_measurements():
             # Check that the covariance is shrinking and stabilizing
             assert traces[-2] - traces[-1] > -1e-6, f"Covariance trace too large at step {i}"
 
-    # To run: pytest tests/test_kalman.py -v
+# To run: pytest tests/test_kalman.py -v
