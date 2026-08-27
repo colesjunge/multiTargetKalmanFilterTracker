@@ -49,7 +49,7 @@ class PositionSensor(Sensor):
         # Get the number of targets
         n_targets = true_states.shape[0]
 
-        # Determine which targets are detected (Do I create the mask before or after noise?)
+        # Determine which targets are detected
         detected_mask = rng.uniform(size=n_targets) < self.p_detect
 
         # Generate position measurements for detected targets
@@ -64,6 +64,17 @@ class PositionSensor(Sensor):
                     measurement = true_pos + noise
 
                     measurements.append(Detection(measurement, t, sensor_id="radar", meta={}))
+
+        # Add clutter to measurements
+        n_clutter = rng.poisson(self.clutter_rate) # Poisson as clutter_rate is defined as mean count per frame
+        for _ in range(n_clutter):
+            # Clutter X, Y (uniform from fov bounds)
+            clutter_pos = np.array([
+                rng.uniform(self.fov[0], self.fov[1]),
+                rng.uniform(self.fov[2], self.fov[3])
+            ])
+
+            measurements.append(Detection(clutter_pos, t, sensor_id="clutter", meta={"clutter": True}))
 
         return measurements
 
