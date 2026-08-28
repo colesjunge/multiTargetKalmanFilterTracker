@@ -2,7 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pathlib
 
-def plot_tracks(raw_measurements: list[np.ndarray], filtered_est: list[np.ndarray], true_states: list[np.ndarray], save_path: str | None = None) -> None:
+def plot_tracks(raw_measurements: list[np.ndarray], 
+                filtered_est: list[np.ndarray], 
+                true_states: list[np.ndarray], 
+                save_path: str | None = None,
+                turn_onset: np.ndarray | None = None) -> None:
     """
     Plots the tracks of targets over time.
 
@@ -32,10 +36,14 @@ def plot_tracks(raw_measurements: list[np.ndarray], filtered_est: list[np.ndarra
     plt.title('Target Tracks')
     plt.xlabel('X Position')
     plt.ylabel('Y Position')
-    plt.legend()
     plt.grid()
     plt.axis('equal')
 
+    if turn_onset is not None:
+        plt.scatter(x=turn_onset[0], y=turn_onset[1], marker="*", label="Turn Onset", zorder=5)
+
+    plt.legend()
+    
     if save_path:
         pathlib.Path(save_path).parent.mkdir(parents=True, exist_ok=True)
         plt.savefig(save_path)

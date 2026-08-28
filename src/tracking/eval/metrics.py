@@ -62,4 +62,23 @@ def average_nees(snapshots: list[tuple[np.ndarray, np.ndarray]], truths: list[np
     return float(avg_nees / len(snapshots))
 
 
+def peak_position_error(estimates: np.ndarray, truth: np.ndarray) -> tuple[float, int]:
+    """Calculate the peak error between estimated and true positions.
+    In: estimates shape (K, 2), truth shape (K, 2)
+    Out: result (peak_error, peak_error_frame)
+    """
 
+    if estimates.shape != truth.shape:
+        raise ValueError("Estimates and truth must have the same shape.")
+
+    # Difference between estimated and true positions
+    diff = estimates - truth
+    squared_diff = np.linalg.norm(diff, axis=1)
+
+    # Peak error
+    peak_error = np.max(squared_diff)
+
+    # Get index for peak error
+    peak_error_frame = np.argmax(squared_diff)
+
+    return (float(peak_error), int(peak_error_frame))
