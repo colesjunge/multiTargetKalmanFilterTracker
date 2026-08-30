@@ -13,7 +13,10 @@ def plot_tracks(raw_measurements: list[np.ndarray],
     In: raw_measurements: list of np.ndarray, each of shape (T, 2) representing the raw measurements of a target over time.
         filtered_est: list of np.ndarray, each of shape (T, 2) representing the filtered estimates of a target over time.
         true_states: list of np.ndarray, each of shape (T, 2) representing the true states of a target over time.
+        save_path: optional file path to save the figure to; if None, the plot is only shown, not saved.
+        turn_onset: optional (2,) array [x, y] marking a specific point on the trajectory (where a maneuver begins) with a distinct marker.
     Out: None
+
     """
 
     plt.figure(figsize=(10, 8))
@@ -50,3 +53,34 @@ def plot_tracks(raw_measurements: list[np.ndarray],
 
     plt.show()
 
+
+def plot_sweep_curve(x_values: np.ndarray, 
+                     y_values: np.ndarray, 
+                     xlabel: str, 
+                     ylabel: str, 
+                     title: str, 
+                     save_path: str | None = None) -> None:
+    """
+    Plots a single metric as a function of one swept scenario parameter as a line-and-marker curve.
+
+    In: x_values: shape (N,), the swept parameter values (e.g. clutter_rate values tested).
+        y_values: shape (N,), the corresponding aggregated metric value for each x_value (e.g. mean RMSE across trials).
+        xlabel: label for the x-axis (name of the swept parameter).
+        ylabel: label for the y-axis (name of the metric being plotted).
+        title: plot title.
+        save_path: optional file path to save the figure to; if None, the plot is only shown, not saved.
+    Out: None
+    """
+
+    plt.figure(figsize=(10, 8))
+    plt.plot(x_values, y_values, marker='o')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.grid()
+
+    if save_path:
+        pathlib.Path(save_path).parent.mkdir(parents=True, exist_ok=True)
+        plt.savefig(save_path)
+
+    plt.show()

@@ -1,0 +1,23 @@
+# Baseline tuning parameters for the tracker and its simulated world.
+# These can be overidden by individual scripts (demos, run_sweep.py)
+
+simulation:
+  dt: 0.1 # seconds per step
+  fov: [0, 10000, 0, 10000] # sensor field of view (x_min, x_max, y_min, y_max)
+
+motion:
+  sigma_a: 0.0  # process noise std-dev (m/s^2)
+                # 0.0 keeps the CV model exact (matches ground truth)
+
+measurement:
+  sigma_pos: 4.0  # measurement noise std-dev (m)
+                  #To have a calibrated filter this must match sensor.sigma_pos
+
+sensor:
+  p_detect: 1.0 # probability of detection per target per frame
+  clutter_rate: 0.0 # mean clutter detections per frame (Poisson)
+
+tracker:
+  n_confirm: 3  # consecutive hits required to confirm a tentative track
+  max_misses: 5 # consecutive misses before a track is deleted
+  gate_confidence: 0.99 # chi-squared gate confidence level for association

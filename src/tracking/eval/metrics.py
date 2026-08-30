@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import linalg
+from ..types import TrackSnapshot
 
 
 def position_rmse(estimates: np.ndarray, truth: np.ndarray) -> float:
@@ -82,3 +83,46 @@ def peak_position_error(estimates: np.ndarray, truth: np.ndarray) -> tuple[float
     peak_error_frame = np.argmax(squared_diff)
 
     return (float(peak_error), int(peak_error_frame))
+
+def match_tracks_to_truth(snapshots: list[TrackSnapshot], true_positions: dict[int, np.ndarray], gate: float) -> dict[int, int]:
+    """ Find track snapshot that is nearest to true position for each true_id (within gate)
+    In: snapshots; true_positions (truth_id -> position) for each frame; gate 
+    Out: matched (truth_id -> track_id)
+    """
+
+    matched = {}
+    confirmed_snapshots = [s for s in snapshots if s.confirmed]
+
+    for truth_id, position in true_positions.items():
+        min_distance = gate
+        curr_match = None
+
+        for snapshot in confirmed_snapshots:
+            curr_distance = np.linalg.norm(snapshot.x[:2] - position)
+            if curr_distance <= min_distance:
+                min_distance = curr_distance
+                curr_match = snapshot.track_id
+
+        if curr_match is not None:
+            matched[truth_id] = curr_match
+
+    return matched
+        
+
+
+
+def count_id_switches(assignment_log: list[dict[int, int]], truth_ids: list[int]) -> int:
+    """ Counts how many times consecutive entries in a filtered sequence differ (tracks switched)
+    In: assignment_log; true_ids 
+    Out: count 
+    """
+    count = 0
+
+    for truth_id in truth_ids:
+        matching_frames = [frame_dict[truth_id] for frame_dict in assignment_log if truth_id in frame_dict]
+
+        count += sum(1 for a, b in zip(matching_frames, matching_frames[1:]) if a != b)
+
+    return count
+
+
