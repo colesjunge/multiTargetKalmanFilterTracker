@@ -179,6 +179,10 @@ Run via `python scripts/run_sweep.py`.
 - `angle_indices` and a `residual_with_angles` helper were added to the base `MeasurementModel`/`KalmanFilter` (not used in this project)
 - The next project will build upon this and entail nonlinear sensor fusion with Extended/Unscented Kalman Filters across radar and EO/IR sensors
 
+## On AI Assistance
+
+I used Claude Code in this project explicitly as a debugging and testing guide. It did not write any code, but it was useful for reviewing and debugging files to ensure that all functions were correctly implemented and integrated. Rather than fixing issues, I had it explain their root causes, allowing me to make and learn the appropriate fixes myself. It was also used to expedite git commits/pushes.
+
 ## License
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
