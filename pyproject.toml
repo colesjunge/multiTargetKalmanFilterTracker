@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "target-tracking"
 version = "1.0.0"
 description = "A multi-target Kalman filter tracker built from scratch: motion/measurement models, gating + Hungarian association, and Monte Carlo evaluation."
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "numpy>=1.26",
