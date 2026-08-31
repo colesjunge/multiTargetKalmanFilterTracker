@@ -9,6 +9,7 @@ class MeasurementModel(ABC):
     Future subclasses will implement nonlinear and learned variants (why they are functions and not just matrices)
     """
     dim_z: int
+    angle_indices: list[int] = []
 
     @abstractmethod
     def h(self, x: np.ndarray) -> np.ndarray:

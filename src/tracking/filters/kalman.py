@@ -3,6 +3,7 @@ from ..models.motion import MotionModel
 from ..models.measurement import MeasurementModel
 import numpy as np
 from scipy import linalg
+from .utils import residual_with_angles
 
 class KalmanFilter(BayesFilter):
     """
@@ -54,7 +55,7 @@ class KalmanFilter(BayesFilter):
         Out: (y, S) where y is (dim_z,) and S is (dim_z, dim_z); y is the innovation (residual) and S is the innovation covariance
         """
 
-        innovation_res = z - self.measurement.h(self.x)
+        innovation_res = residual_with_angles(z, self.measurement.h(self.x), self.measurement.angle_indices)
         selection_matrix = self.measurement.H(self.x)
         innovation_cov = selection_matrix @ self.P @ selection_matrix.T + self.measurement.R()
 
